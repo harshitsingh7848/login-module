@@ -1,8 +1,11 @@
 <?php
 
+
 $user = $_POST['user'];#To catch Username that the user types
 
 $pass = $_POST['pass']; # to catch the password that the user types
+
+
 
 $encryptPass= md5($pass); # encoding the password
 
@@ -16,7 +19,7 @@ $fr=fread($fp,filesize($fileName));
 # putting the username and password on different array indices
 $resultArray=explode('|',$fr);
 
-if(trim($resultArray[1])==$encryptPass && $resultArray[0]==$user){
+if(trim($resultArray[1])==trim($encryptPass) && trim($resultArray[0])==trim($user)){
 	header("Location: Dashboard.php",true);
 }
 else{
