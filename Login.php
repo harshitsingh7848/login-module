@@ -1,11 +1,8 @@
 <?php
 
-
 $user = $_POST['user'];#To catch Username that the user types
 
 $pass = $_POST['pass']; # to catch the password that the user types
-
-
 
 $encryptPass= md5($pass); # encoding the password
 
