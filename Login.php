@@ -14,7 +14,7 @@ $fp=fopen($fileName,"r");
 $fr=fread($fp,filesize($fileName));
 
 # putting the username and password on different array indices
-$resultArray=explode('|',$fr);
+$resultArray=explode('|',$fr); # This is the array which contains username and password
 
 if(trim($resultArray[1])==trim($encryptPass) && trim($resultArray[0])==trim($user)){
 	header("Location: Dashboard.php",true);
