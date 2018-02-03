@@ -1,40 +1,7 @@
 <?php
-$count=0;
-function clean_text($str){
-        $str=trim($str);
-        $str=stripslashes($str);
-        $str=htmlspecialchars($str);
-        return $str;
-}
+$fp=fopen("employee_data.csv","a");
 
-if(isset($_POST["submit"]))
-{
-    $fname = clean_text($_POST["fname"]);
-    $lname=clean_text($_POST["lname"]);
-    $email=clean_text($_POST["email"]);
-
-    $fp=fopen("employee_data.csv","a");
-    $no_rows =count(file("employee_data.csv"));
-   
-   $data="";
-    
-
-    if($no_rows==0){
-        $data.="\n";
-        $data= $fname."," .$lname.",".$email;
-    }
-    else{
-        $data= $fname."," .$lname.",".$email;
-    }
-
-    fwrite($fp,$data."\n");
-    $count =count(file("employee_data.csv"))-1;
-    fclose($fp);
-    
-    
-}
-
-
+$count =count(file("employee_data.csv"))-1;
 ?>
 
 <!DOCTYPE html>
@@ -51,10 +18,43 @@ if(isset($_POST["submit"]))
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script>
+ $(document).ready(function(){
+        $.ajax({
+            url:"get_data.php",
+            dataType:"html",
+            success:function(data){
+                
+                $('#employee_table').html(data); 
+            }
+        });
+});
+</script>     
+
+
+
+<script>
+ $(document).ready(function(){
+     $('#submit').click(function(){
+        $.ajax({
+            url:"get_data.php",
+            dataType:"html",
+            success:function(data){
+                
+                $('#employee_table').html(data); 
+            }
+        });
+    });
+});
+</script>     
+
     </head>
     <body>
-       <label>Number of employees are : <?php echo $count ;?></label>
-        <button type="button"  data-toggle="modal" data-target="#myModal" id="btn">Add Employee</button>
+
+    <script src="store_details.js"></script>
+       <label id="demo"> <?php echo "Number of employees are :". $count ;?></label>
+        <button type="button"  data-toggle="modal" data-target="#myModal" id="btn" >Add Employee</button>
        
        <!-- Modal -->
         <div id="myModal" class="modal fade" role="dialog">
@@ -69,24 +69,33 @@ if(isset($_POST["submit"]))
             <p> Please fill the form to add New Employee </p>
             </div>
             <div class="modal-body">
-            <form id="register"  method="post" enctype="multipart/form-data">
-                    <input type="text" placeholder="First Name" name="fname" required>
+            <form id="register" enctype="multipart/form-data" >
+                    <input type="text" placeholder="First Name" name="fname" id="fname" required>
                     <br>
-                    <input type="text" placeholder="Last Name" name="lname" required>
+                    <input type="text" placeholder="Last Name" name="lname" id="lname" required>
                     <br>
-                    <input type="text" placeholder="Enter Email" name="email" required>
+                    <input type="text" placeholder="Enter Email" name="email" id="email" required>
                     <br>
                     Select image to upload:
                     <input type="file" name="fileToUpload" id="fileToUpload">
                     <br>
-                    <input type="submit" value="Add Details" name="submit" >             
+                    <button type="button" name="submit" id="submit" onclick="func()" data-dismiss="modal" >Add Details</button>             
             </form>
         </div>
-        
-        
-      
     </div>
   </div>
 </div>
+
+                <div class="container">
+                    <div class="table-responsive">
+
+                        <div id="employee_table">
+                        
+                        </div>
+
+                    </div>
+                </div>
     </body>
 </html>
+
+
