@@ -17,6 +17,7 @@ while (($row = fgetcsv($fp, 0, ",")) !== FALSE) {
         <td>$row[0]</td>
         <td>$row[1]</td>
         <td>$row[2]</td>
+        <td>$row[3]</td>
         </tr>";
        }
        else{
@@ -24,6 +25,7 @@ while (($row = fgetcsv($fp, 0, ",")) !== FALSE) {
         <td>$row[0]</td>
         <td>$row[1]</td>
         <td>$row[2]</td>
+        <td>$row[3]</td>
         </tr>";
        }
        $count1++;
