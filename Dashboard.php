@@ -1,7 +1,8 @@
-    <?php
-    $fp=fopen("employee_data.csv","a");
+<?php
+    /* $fp=fopen("employee_data.csv","a");
 
-    $count =count(file("employee_data.csv"))-1;
+    $count =count(file("employee_data.csv"))-1; */
+	
     ?>
 
     <!DOCTYPE html>
@@ -18,40 +19,41 @@
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
             <script>
-                
+                /* this script is for displaying the table on the html page  */
                 var updateEmployeeView = function(){
 
                     $.ajax({
                         url:"get_data.php",
                         dataType:"html",
                         success:function(data){
-                            $('#employee_table').html(data); 
+							//$('#table').DataTable();
+                            $('#table').html(data);
+								
+                
                         }
                     });
                 
             
         };
                 $(document).ready(function(){
-                    
-                
+                     
                 updateEmployeeView(); 
                    
                 });
     </script>     
-
-
-
-    
-
-
-
-
+	
+	<script>
+	
+	</script>
+	
         </head>
         <body>
 
-        <script src="store_details.js"></script>
+        <!-- <script src="store_details.js"></script> -->
         <label id="demo"> <?php echo "Number of employees are :". $count ;?></label>
             <button type="button"  data-toggle="modal" data-target="#myModal" id="btn" >Add Employee</button>
         
@@ -75,14 +77,12 @@
                         <br>
                         <input type="text" placeholder="Enter Email" name="email" id="email" required>
                         <br>
-                                     
-                </form>
-                <div>
-                Select image to upload:
+				Select image to upload:
                         <input type="file" name="file" id="file">
                         <br>
-                        <button type="button" name="submit" id="submit" onclick="func()" data-dismiss="modal" >Add Details</button>
-                </div>
+                   <button type="button" name="submit" id="submit"  data-dismiss="modal" >Add Details</button>	
+                </form>
+                
             </div>
         </div>
     </div>
@@ -91,23 +91,34 @@
                     <div class="container">
                         <div class="table-responsive">
 
+                        <!-- Table contents will be put in here-->
                             <div id="employee_table">
+								<table border=1  id="table">
+								
+								</table>
                             
                             </div>
 
                         </div>
                     </div>
-        </body>
-    </html>
-
-
-
-    <script>
+					
+					
+					<script>
+                        /* It is the Script for sending the contents of form to the server and validation of file type  */
 $(document).ready(function(){
- $('#submit').click( function(){
+	
+ $('#submit').click(function(){
+	  
   var name = document.getElementById("file").files[0].name;
   var form_data = new FormData();
   var ext = name.split('.').pop().toLowerCase();
+  
+  var fname = $('#fname').val();
+  var lname = $('#lname').val();
+  var email = $('#email').val();
+  
+ 
+  
   if(jQuery.inArray(ext, ['gif','png','jpg','jpeg']) == -1) 
   {
    alert("Invalid Image File");
@@ -123,7 +134,16 @@ $(document).ready(function(){
   else
   {
    form_data.append("file", document.getElementById('file').files[0]);
-   $.ajax({
+   
+   form_data.append("fname",fname);
+   
+   form_data.append("lname",lname);
+   form_data.append("email",email);
+   
+   console.log(form_data);
+  
+   
+    $.ajax({
     url:"register.php",
     method:"POST",
     data: form_data,
@@ -132,10 +152,31 @@ $(document).ready(function(){
     processData: false,
     success:function(data)
     {
-     alert(data);
+      $('#demo').html(data);
+	  updateEmployeeView();
     }
-   });
+   }); 
   }
  });
 });
-</script>
+	</script>	
+
+    <script>
+    $(document).ready(function(){
+        $.ajax({
+    url:"register.php",
+    method:"POST",
+    success:function(data)
+    {
+        $('#demo').html(data);
+    }
+   }); 
+	
+    });
+    </script>			
+        </body>
+    </html>
+
+
+
+  
